@@ -31,6 +31,7 @@ const DetailsForm = forwardRef<DetailsFormRef, DetailsFormProps>(
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isUploading, setIsUploading] = useState<boolean>(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
 
     const {
       register,
@@ -74,10 +75,7 @@ const DetailsForm = forwardRef<DetailsFormRef, DetailsFormProps>(
       }
     }, [setValue]);
 
-    const handleImageChange = async (
-      event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      const file = event.target.files?.[0];
+    const handleImageUpload = async (file: File) => {
       if (!file) return;
 
       try {
@@ -109,10 +107,38 @@ const DetailsForm = forwardRef<DetailsFormRef, DetailsFormProps>(
         );
       } catch (error) {
         setUploadError("Failed to upload image. Please try again.");
-        // console.error("Error uploading image:", error);
-        return error;
+        console.error("Error uploading image:", error);
       } finally {
         setIsUploading(false);
+      }
+    };
+
+    const handleImageChange = async (
+      event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        await handleImageUpload(file);
+      }
+    };
+
+    const handleDragOver = (event: React.DragEvent<HTMLLabelElement>) => {
+      event.preventDefault();
+      setIsDragging(true);
+    };
+
+    const handleDragLeave = (event: React.DragEvent<HTMLLabelElement>) => {
+      event.preventDefault();
+      setIsDragging(false);
+    };
+
+    const handleDrop = async (event: React.DragEvent<HTMLLabelElement>) => {
+      event.preventDefault();
+      setIsDragging(false);
+
+      const file = event.dataTransfer.files?.[0];
+      if (file) {
+        await handleImageUpload(file);
       }
     };
 
@@ -133,9 +159,14 @@ const DetailsForm = forwardRef<DetailsFormRef, DetailsFormProps>(
             <div className="border border-secondary bg-darker w-full h-60 flex items-center justify-center">
               <label
                 htmlFor="file-upload"
-                className="relative flex flex-col items-center justify-center w-80 h-60 border-2 border-primary rounded-3xl cursor-pointer transition hover:bg-[#0a343c]"
+                className={`relative flex flex-col items-center justify-center w-80 h-60 border-2 border-primary rounded-3xl cursor-pointer transition ${
+                  isDragging ? "bg-[#0a343c]" : "hover:bg-[#0a343c]"
+                }`}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
               >
                 {selectedImage && (
                   <Image
@@ -147,7 +178,7 @@ const DetailsForm = forwardRef<DetailsFormRef, DetailsFormProps>(
                   />
                 )}
 
-                {(!selectedImage || isHovered) && (
+                {(!selectedImage || isHovered || isDragging) && (
                   <div className="absolute inset-0 bg-primary/20 flex flex-col items-center justify-center rounded-3xl">
                     {isUploading ? (
                       <LoadingSpinner />
@@ -159,7 +190,9 @@ const DetailsForm = forwardRef<DetailsFormRef, DetailsFormProps>(
                           className="w-10 h-10"
                         />
                         <span className="text-sm text-white text-center">
-                          Drag & Drop or click to upload
+                          {isDragging
+                            ? "Drop the image here"
+                            : "Drag & Drop or click to upload"}
                         </span>
                       </>
                     )}

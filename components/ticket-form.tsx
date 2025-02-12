@@ -36,7 +36,7 @@ const TicketForm = forwardRef<TicketFormRef, TicketFormProps>(({ onNext }, ref) 
             style={{ width: "33%" }}
           />
         </div>
-        <div className="border border-primary mt-5 p-5 rounded-3xl bg-[#08252b]">
+        <div className="border w-full border-primary mt-5 p-5 rounded-3xl bg-[#08252b]">
           <div className="flex flex-col justify-center text-center items-center border border-primary rounded-3xl p-5 py-10 bg-gradient-to-r from-primary/90 via-darker to-darker">
             <h1 className="md:text-[62px] text-5xl font-bold font-roadRage">
               Techember Fest &#34;25
