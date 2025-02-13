@@ -12,6 +12,7 @@ import { FormData } from "@/types";
 import Heading from "./heading";
 
 import ticketImage from "@/public/bg.svg";
+import ticketImageMobile from "@/public/Subtract.svg";
 import barCode from "@/public/Bar Code.svg";
 enum STEPS {
   TICKET = 0,
@@ -56,7 +57,7 @@ const Events = () => {
         }
       } catch (error) {
         // console.error("Ticket form submission error:", error);
-        return error
+        return error;
       }
       return;
     }
@@ -69,7 +70,7 @@ const Events = () => {
         }
       } catch (error) {
         // console.error("Details form submission error:", error);
-        return error
+        return error;
       }
       return;
     }
@@ -103,7 +104,7 @@ const Events = () => {
       localStorage.setItem("savedTickets", JSON.stringify(savedTickets));
 
       // console.log("Ticket saved:", ticket);
-      return ticket
+      return ticket;
     }
   }, [steps, formData, ticketData]);
 
@@ -171,12 +172,17 @@ const Events = () => {
         </p>
     
         {/* Ticket Container */}
-        <div className="relative py-5 mt-10 flex flex-col items-center justify-center max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto px-4">
+        <div className="relative py-5 mt-10 flex flex-col items-center justify-center w-[90%] sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto px-4">
           {/* Ticket Image */}
           <Image
             src={ticketImage}
             alt="Ticket Image"
-            className="w-full md:w-[27rem] lg:w-[30rem] object-contain"
+            className="w-full max-w-xs sm:max-w-md md:w-[27rem] lg:w-[30rem] object-contain hidden sm:block"
+          />
+          <Image
+            src={ticketImageMobile}
+            alt="Ticket Image"
+            className="w-full object-contain sm:hidden"
           />
     
           {/* Barcode Image */}
@@ -187,7 +193,7 @@ const Events = () => {
           />
     
           {/* Ticket Details */}
-          <div className="absolute md:top-14 top-0 border md:w-[70%] sm:w-[80%] w-[90%] border-lighter rounded-3xl p-4 bg-[#08252b]">
+          <div className="absolute md:top-14 top-10 border md:w-[70%] sm:w-[80%] w-[90%] border-lighter rounded-3xl p-4 bg-[#08252b]">
             <h1 className="font-roadRage text-[28px] md:text-[34px] lg:text-[40px]">
               Techember Fest &quot;25
             </h1>
@@ -268,6 +274,7 @@ const Events = () => {
         </div>
       </div>
     );
+    
   }
   return (
     <Container>

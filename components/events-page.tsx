@@ -26,7 +26,7 @@ const EventsPage = ({
       
       <div className="w-full h-full">{body}</div>
 
-      <div className="flex flex-col gap-2 md:p-6 w-full mt-20 justify-center items-center">
+      <div className="flex flex-col gap-2 md:p-6 w-full mt-20  justify-center items-center">
         <div className="flex md:flex-row flex-col-reverse gap-4 md:w-11/12 w-full">
           {secondaryAction && secondaryActionLabel && (
             <Button
