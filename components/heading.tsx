@@ -7,7 +7,7 @@ interface HeadingProps{
 
 const Heading = ({title, subtitle}: HeadingProps) => {
   return (
-    <div className='flex justify-between items-center text-white'>
+    <div className='flex md:flex-row flex-col justify-between items-center text-white'>
         <h1 className='md:text-[32px] text-2xl font-normal'>{title}</h1>
         <p>{subtitle}</p>
     </div>
